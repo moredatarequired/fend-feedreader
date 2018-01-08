@@ -45,9 +45,10 @@ function loadFeed(id, cb) {
         console.error(`loadFeed was accessed with invalid id ${id}`);
         cb();
     }
+    var feedUrl, feedName;
     try {
-        var feedUrl = allFeeds[id].url,
-            feedName = allFeeds[id].name;
+        feedUrl = allFeeds[id].url,
+        feedName = allFeeds[id].name;
     } catch (e) {
         console.error(`Feed ${id} is not defined correctly: ` + e.message);
         cb();
