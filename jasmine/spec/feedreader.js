@@ -111,6 +111,48 @@ $(function () {
                 expect(titleText).not.toEqual(newTitleText);
             });
         });
+    });
 
+    describe('formLoad', function () {
+        beforeEach(function (done) {
+            loadFeed(0, () => done());
+        });
+
+        describe('out-of-bounds access', function () {
+            let titleText;
+
+            beforeEach(function (done) {
+                const firstEntryTitle = document.querySelector('.feed .entry h2');
+                titleText = firstEntryTitle.textContent;
+                // Out of bounds access
+                loadFeed(allFeeds.length, () => done());
+            });
+
+            it('will ignore out-of-bounds access', function () {
+                const firstEntryTitle = document.querySelector('.feed .entry h2');
+                let newTitleText = firstEntryTitle.textContent;
+                // Since the requested id was invalid, the page shouldn't update.
+                expect(titleText).toEqual(newTitleText);
+            });
+        });
+
+        describe('undefined parameters', function () {
+            let titleText;
+
+            beforeEach(function (done) {
+                const firstEntryTitle = document.querySelector('.feed .entry h2');
+                titleText = firstEntryTitle.textContent;
+
+                allFeeds.push({});  // Add a new, broken feed at the end.
+                loadFeed(allFeeds.length - 1, () => done());
+            });
+
+            it('will ignore incompletely defined feeds', function () {
+                const firstEntryTitle = document.querySelector('.feed .entry h2');
+                let newTitleText = firstEntryTitle.textContent;
+                // Since the requested id was invalid, the page shouldn't update.
+                expect(titleText).toEqual(newTitleText);
+            });
+        });
     });
 }());
