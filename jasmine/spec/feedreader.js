@@ -89,10 +89,28 @@ $(function () {
         });
     });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function () {
+        beforeEach(function (done) {
+            loadFeed(0, () => done());
+        });
+        /* Ensure that when a new feed is loaded by loadFeed
+         * the content actually changes.
+         */
+        describe('feed content', function () {
+            let titleText;
 
-    /* TODO: Write a test that ensures when a new feed is loaded
-     * by the loadFeed function that the content actually changes.
-     * Remember, loadFeed() is asynchronous.
-     */
+            beforeEach(function (done) {
+                const firstEntryTitle = document.querySelector('.feed .entry h2');
+                titleText = firstEntryTitle.textContent;
+                loadFeed(1, () => done());
+            });
+
+            it('changes after loading with a different id', function () {
+                const firstEntryTitle = document.querySelector('.feed .entry h2');
+                let newTitleText = firstEntryTitle.textContent;
+                expect(titleText).not.toEqual(newTitleText);
+            });
+        });
+
+    });
 }());
